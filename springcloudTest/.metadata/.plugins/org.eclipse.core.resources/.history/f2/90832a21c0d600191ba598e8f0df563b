@@ -1,0 +1,40 @@
+package com.hy.springcloud.service.impl;
+
+import java.util.List;
+
+import com.hy.springcloud.entities.User;
+import com.hy.springcloud.service.DeptClientaservice;
+
+import feign.hystrix.FallbackFactory;
+
+public class DeptClientServiceFallBackFactory implements FallbackFactory<DeptClientaservice> {
+
+	@Override
+	public DeptClientaservice create(Throwable cause) {
+		// TODO Auto-generated method stub
+		return new DeptClientaservice() {
+			
+			@Override
+			public User getUserById(int id) {
+				User u =  new User();
+				u.setName("没有该信息，Consumer客户端提供的降级信息，此刻服务provider已经关闭");
+				u.setDb_dource("没有这个数据库");
+				return u;
+			}
+
+			
+			@Override
+			public int addUser(User user) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public List<User> findAllUserList() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+	}
+
+}

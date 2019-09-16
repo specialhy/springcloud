@@ -1,0 +1,11 @@
+package com.bjlemon.oa.service;
+
+import com.bjlemon.oa.domain.Privilege;
+
+import java.util.List;
+
+public interface PrivilegeService {
+    List<Privilege> findAllTopPrivilege();
+    List<Privilege> findPrivilegeChildrenListById(Integer id);
+    Privilege findPrivilegeById(Integer id);
+}

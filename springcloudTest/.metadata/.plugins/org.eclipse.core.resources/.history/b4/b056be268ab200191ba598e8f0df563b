@@ -1,0 +1,18 @@
+package com.hy.cloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@EnableEurekaClient
+
+public class UserConsumer802_feign {
+	  public static void main(String[] args) {
+	       SpringApplication.run(UserConsumer802_feign.class,args);
+	    }
+
+}

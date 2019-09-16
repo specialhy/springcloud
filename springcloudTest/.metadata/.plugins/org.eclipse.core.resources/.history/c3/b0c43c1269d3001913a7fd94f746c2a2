@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjlemon.oa.mapper.RoleMapper">
+
+    <resultMap id="RoleRM" type="com.bjlemon.oa.domain.Role">
+        <id property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+        <result property="description" column="role_description"/>
+    </resultMap>
+    
+    <select id="findAll" resultMap="RoleRM">
+        SELECT
+          *
+        FROM
+          oa_role
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="RoleRM">
+        SELECT
+          *
+        FROM
+          oa_role
+        WHERE
+          role_id = #{id}
+    </select>
+
+<delete id="deleteById" parameterType="int">
+    DELETE
+    FROM oa_role
+    WHERE role_id=#{id}
+</delete>
+</mapper>

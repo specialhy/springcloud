@@ -1,0 +1,91 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.Privilege;
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.domain.User;
+import com.bjlemon.oa.domain.UserRole;
+import com.bjlemon.oa.mapper.UserMapper;
+import com.bjlemon.oa.service.RolePrivilegeService;
+import com.bjlemon.oa.service.RoleService;
+import com.bjlemon.oa.service.UserRoleService;
+import com.bjlemon.oa.service.UserService;
+import com.bjlemon.oa.util.db.DataSourceEnum;
+import com.bjlemon.oa.util.db.DynamicDataSource;
+import com.bjlemon.oa.vo.UserQueryVo;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+@Service
+@Transactional
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private RoleService roleService;
+@Autowired
+      private RolePrivilegeService rolePrivilegeService;
+    @Override
+    public List<User> findAllUserList() {
+
+        return userMapper.findAll();
+    }
+/*添加用户*/
+    @Override
+    public void addUser(User user, List<Integer> roleIdList) {
+        DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());
+        if (user == null) {
+            throw new IllegalArgumentException("");
+        }
+
+        this.userMapper.add(user);
+
+        if (CollectionUtils.isNotEmpty(roleIdList)) {
+            for (Integer roleId : roleIdList) {
+                UserRole userRole = new UserRole();
+                userRole.setUser(user);
+                userRole.setRole(roleService.findRoleById(roleId));
+
+                this.userRoleService.addUserRole(userRole);
+            }
+        }
+        DynamicDataSource.clearDataSource();
+    }
+
+    @Override
+    public User login(String loginName, String password) {
+        UserQueryVo userQueryVo=new UserQueryVo();
+        userQueryVo.setLoginName(loginName);
+        userQueryVo.setPassword(password);
+        return this.userMapper.findByQueryVo(userQueryVo);
+
+    }
+
+    /*根据用户权限  */
+    @Override
+    public List<Privilege> findAllPrivilegeListByCurrenUser(User user) {
+        DynamicDataSource.setDataSource(DataSourceEnum.MASTER.getName());
+    List<Privilege> privilegeList=new ArrayList<Privilege>();
+        Set<UserRole> userRoleSet = user.getUserRoleSet();
+        if(CollectionUtils.isNotEmpty(userRoleSet)){
+            for(UserRole userRole : userRoleSet){
+                List<RolePrivilege> rolePrivilegeList=this.rolePrivilegeService.findRolePrivilegeListByRoleId(userRole.getRole().getId());
+                for(RolePrivilege rolePrivilege:rolePrivilegeList){
+                    privilegeList.add(rolePrivilege.getPrivilege());
+                }
+            }
+        }
+        DynamicDataSource.clearDataSource();
+        return privilegeList;
+    }
+}

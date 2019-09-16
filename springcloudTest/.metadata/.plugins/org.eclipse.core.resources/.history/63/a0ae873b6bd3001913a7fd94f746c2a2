@@ -1,0 +1,11 @@
+package com.bjlemon.oa.mapper;
+
+import com.bjlemon.oa.domain.Privilege;
+
+import java.util.List;
+
+public interface PrivilegeMapper {
+    List<Privilege> findAllTop();
+    List<Privilege> findChildrenListById(Integer id);
+    Privilege findById(Integer id);
+}

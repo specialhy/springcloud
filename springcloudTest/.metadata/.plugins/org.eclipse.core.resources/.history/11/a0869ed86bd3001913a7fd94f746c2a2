@@ -1,0 +1,37 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.domain.UserRole;
+import com.bjlemon.oa.mapper.UserRoleMapper;
+import com.bjlemon.oa.service.UserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class UserRoleServiceImpl implements UserRoleService {
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Override
+    public void addUserRole(UserRole userRole) {
+        this.userRoleMapper.add(userRole);
+    }
+
+
+    @Override
+    public List<UserRole> findUserRoleListByRoleId(Integer id) {
+        return this.userRoleMapper.findByRoleId(id);
+    }
+
+    @Override
+    public void deleteUserRole(UserRole userRole) {
+        this.userRoleMapper.delete(userRole);
+    }
+
+
+}

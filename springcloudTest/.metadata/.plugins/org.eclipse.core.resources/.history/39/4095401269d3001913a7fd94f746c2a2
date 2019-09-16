@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjlemon.oa.mapper.RolePrivilegeMapper">
+    <resultMap id="RolePrivilegeRM" type="com.bjlemon.oa.domain.RolePrivilege">
+        <id property="id" column="role_privilege_id"></id>
+        <association property="role" column="role_id" javaType="com.bjlemon.oa.domain.Role">
+            <id property="id" column="role_id"/>
+            <result property="name" column="role_name"/>
+            <result property="description" column="role_description"/>
+        </association>
+        <association property="privilege" column="privilege_id" javaType="com.bjlemon.oa.domain.Privilege">
+            <id property="id" column="privilege_id"/>
+            <result property="name" column="privilege_name"/>
+            <result property="url" column="privilege_url"/>
+            <result property="level" column="privilege_level"/>
+            <result property="isLeaf" column="privilege_is_left"/>
+            <result property="isModule" column="privilege_id_module"/>
+        </association>
+    </resultMap>
+<select id="findByRoleId" parameterType="int" resultMap="RolePrivilegeRM">
+SELECT
+rp.role_privilege_id,
+r.role_id,
+r.role_name,
+r.role_description,
+p.privilege_id,
+p.privilege_name,
+p.privilege_url,
+p.privilege_level,
+p.privilege_is_leaf,
+p.privilege_is_module
+FROM oa_role_privilege rp LEFT JOIN oa_role r ON (rp.role_id = r.role_id)
+LEFT JOIN oa_privilege p
+ON (rp.privilege_id = p.privilege_id)
+WHERE rp.role_id = #{id}
+</select>
+    
+<delete id="delete" parameterType="com.bjlemon.oa.domain.RolePrivilege">
+DELETE FROM oa_role_privilege WHERE role_privilege_id=#{id}
+</delete>
+<insert id="add" parameterType="com.bjlemon.oa.domain.RolePrivilege">
+    INSERT INTO oa_role_privilege(privilege_id,role_id) VALUES (#{privilege.id},#{role.id})
+</insert>
+
+</mapper>

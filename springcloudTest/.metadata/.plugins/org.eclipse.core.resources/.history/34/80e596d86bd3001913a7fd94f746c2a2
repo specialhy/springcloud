@@ -1,0 +1,78 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.Role;
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.domain.UserRole;
+import com.bjlemon.oa.mapper.RoleMapper;
+import com.bjlemon.oa.service.PrivilegeService;
+import com.bjlemon.oa.service.RolePrivilegeService;
+import com.bjlemon.oa.service.RoleService;
+import com.bjlemon.oa.service.UserRoleService;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class RoleServiceImpl implements RoleService {
+
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private RolePrivilegeService rolePrivilegeService;
+    @Autowired
+    private PrivilegeService privilegeService;
+    @Override
+    public List<Role> findAllRoleList() {
+        return this.roleMapper.findAll();
+    }
+
+    @Override
+    public Role findRoleById(Integer id) {
+        return this.roleMapper.findById(id);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        //根据role_id把两个中间类删除 然后再删自己
+        List<UserRole> userRoleList=this.userRoleService.findUserRoleListByRoleId(id);
+        List<RolePrivilege> rolePrivilegeList=this.rolePrivilegeService.findRolePrivilegeListByRoleId(id);
+
+        if (CollectionUtils.isNotEmpty(userRoleList)) {
+            for (UserRole userRole : userRoleList) {
+                this.userRoleService.deleteUserRole(userRole);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(rolePrivilegeList)) {
+            for(RolePrivilege rolePrivilege:rolePrivilegeList){
+                this.rolePrivilegeService.deleteRolePrivilege(rolePrivilege);
+        }
+        }
+
+        this.roleMapper.deleteById(id);
+    }
+/*这个是给角色重新授权 要先删除之前所有的权限 然后重新授权*/
+    @Override
+    public void setPrivilege(Role role, Integer[] privilegeIds) {
+        //先查出之前的权限
+        List<RolePrivilege> rolePrivilegeList=this.rolePrivilegeService.findRolePrivilegeListByRoleId(role.getId());
+         /*进行循环删除*/
+        if(CollectionUtils.isNotEmpty(rolePrivilegeList)){
+            for(RolePrivilege rolePrivilege:rolePrivilegeList){
+                this.rolePrivilegeService.deleteRolePrivilege(rolePrivilege);
+            }
+        }
+        RolePrivilege rolePrivilege=null;
+     for(Integer privilegeId:privilegeIds) {
+     rolePrivilege=new RolePrivilege();
+      rolePrivilege.setRole(role);
+      rolePrivilege.setPrivilege(this.privilegeService.findPrivilegeById(privilegeId));
+this.rolePrivilegeService.addRolePrivilege(rolePrivilege);
+     }
+    }
+}

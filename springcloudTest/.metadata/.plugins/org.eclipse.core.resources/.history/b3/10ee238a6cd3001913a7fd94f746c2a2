@@ -1,0 +1,94 @@
+package com.bjlemon.oa.web.controller;
+
+import com.bjlemon.oa.annotation.PrivilegeAnnotation;
+import com.bjlemon.oa.domain.Department;
+import com.bjlemon.oa.domain.Privilege;
+import com.bjlemon.oa.domain.Role;
+import com.bjlemon.oa.domain.User;
+import com.bjlemon.oa.service.DepartmentService;
+import com.bjlemon.oa.service.RoleService;
+import com.bjlemon.oa.service.UserService;
+import com.bjlemon.oa.util.DepartmentUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+
+@Controller
+@RequestMapping("/system")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private RoleService roleService;
+    @PrivilegeAnnotation(action = "/system/user/list")
+    @RequestMapping("/user/list")
+    public String list(Model model) {
+        List<User> userList = this.userService.findAllUserList();
+        model.addAttribute("userList", userList);
+        return "/system/user/list";
+    }
+
+  @PrivilegeAnnotation(action = "/system/user/addUI")/*自定义注解*/
+    @RequestMapping(value = "/user/add", method = RequestMethod.GET)
+    public String add(Model model) {
+        // 准备数据
+        List<Department> topDepartmentList = this.departmentService.findAllTopDepartmentList();
+
+        // 生成部门树
+        List<Department> departmentList = DepartmentUtils.generateDepartmentTree(topDepartmentList);
+
+        /* List<Department> departmentList = this.departmentService.findAllDepartmentList();*/
+
+        // 查询出所有的角色
+        List<Role> roleList = this.roleService.findAllRoleList();
+
+        model.addAttribute("departmentList", departmentList);
+
+        model.addAttribute("roleList", roleList);
+
+        return "/system/user/saveUI";
+    }
+  @PrivilegeAnnotation(action = "/system/user/add")
+    @RequestMapping(value = "/user/add", method = RequestMethod.POST)
+    public String add(User user, Integer departmentId, Integer[] roleIdList) {
+        Department department = this.departmentService.findDepartmentById(departmentId);
+        user.setDepartment(department);
+        user.setPassword("1234");
+        this.userService.addUser(user, Arrays.asList(roleIdList));
+        return "redirect:/system/user/list";
+    }
+
+    @RequestMapping(value = "/user/login",method = RequestMethod.GET)
+    public String login(){
+return "/system/user/loginUI";
+    }
+@RequestMapping(value = "/user/login",method = RequestMethod.POST)
+    public String login(String loginName, String password, HttpSession session,Model model){
+        User user=this.userService.login(loginName,password);
+        if(user != null){
+            //这个用户所有的权限
+            List<Privilege> userOwnPrivilegeList=this.userService.findAllPrivilegeListByCurrenUser(user);
+
+            session.setAttribute("userOwnPrivilegeList",userOwnPrivilegeList);
+            session.setAttribute("user",user);
+            return "redirect:/index/index";
+        }
+    model.addAttribute("error","用户名或密码错误");
+    return "/system/user/loginUI";
+
+}
+}

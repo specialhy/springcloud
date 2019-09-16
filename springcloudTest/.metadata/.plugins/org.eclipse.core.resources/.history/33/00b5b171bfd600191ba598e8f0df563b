@@ -1,0 +1,37 @@
+package com.hy.springcloud.service.impl;
+
+import java.util.List;
+
+import com.hy.springcloud.entities.User;
+import com.hy.springcloud.service.DeptClientaservice;
+
+import feign.hystrix.FallbackFactory;
+
+public class DeptClientServiceFallBackFactory implements FallbackFactory<DeptClientaservice> {
+
+	@Override
+	public DeptClientaservice create(Throwable cause) {
+		// TODO Auto-generated method stub
+		return new DeptClientaservice() {
+			
+			@Override
+			public User getUserById(int id) {
+				User u =  new User();
+				return null;
+			}
+			
+			@Override
+			public List<User> findAllUserLists() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public int addUser(User user) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+		};
+	}
+
+}

@@ -1,0 +1,19 @@
+package com.hy.cloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
+
+import com.hy.myrule.MySelfRule;
+
+@SpringBootApplication
+@EnableEurekaClient
+//针对MICROSERVICECLOUD-PROVIDER-DEPT这个服务进行的负载均衡,MySelfRule是负载均衡算法
+@RibbonClient(name="MICROSERVICECLOUD-PROVIDER-DEPT",configuration=MySelfRule.class)
+public class UserConsumer803 {
+	  public static void main(String[] args) {
+	       SpringApplication.run(UserConsumer803.class,args);
+	    }
+
+}

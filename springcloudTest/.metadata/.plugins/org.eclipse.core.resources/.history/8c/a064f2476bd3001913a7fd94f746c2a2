@@ -1,0 +1,16 @@
+package com.hy.springcloud.mapper;
+
+import com.bjlemon.oa.domain.User;
+import com.bjlemon.oa.vo.UserQueryVo;
+
+import java.util.List;
+
+public interface UserMapper {
+
+    public List<User> findAll();
+
+    void add(User user);
+
+    User findByQueryVo(UserQueryVo userQueryVo);
+
+}

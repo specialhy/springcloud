@@ -1,0 +1,8 @@
+package com.hy.springcloud;
+
+public class Dep8001 {
+	public static void main(String[] args) {
+		
+	}
+
+}

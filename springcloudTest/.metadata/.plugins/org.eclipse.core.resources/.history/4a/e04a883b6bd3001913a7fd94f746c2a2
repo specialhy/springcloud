@@ -1,0 +1,11 @@
+package com.bjlemon.oa.mapper;
+
+import com.bjlemon.oa.domain.RolePrivilege;
+
+import java.util.List;
+
+public interface RolePrivilegeMapper {
+    List<RolePrivilege> findByRoleId(Integer id);
+    void delete(RolePrivilege rolePrivilege);
+    void add(RolePrivilege rolePrivilege);
+}

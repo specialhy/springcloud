@@ -1,0 +1,20 @@
+package com.bjlemon.oa.service;
+
+import com.bjlemon.oa.domain.Department;
+
+import java.util.List;
+
+public interface DepartmentService {
+
+    /**
+     * 查询出所有的顶层部门
+     * @return
+     */
+    List<Department> findAllTopDepartmentList();
+
+    List<Department> findAllDepartmentList();
+
+    Department findDepartmentById(Integer id);
+
+    List<Department> findChildrenListById(Integer id);
+}

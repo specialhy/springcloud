@@ -1,0 +1,12 @@
+package com.hy.springcloud.mapper.service;
+
+
+import java.util.List;
+
+public interface UserService {
+
+    public List<User> findAllUserList();
+
+    void addUser(User user, List<Integer> roleIdList);
+    User login(String loginName,String password);
+}

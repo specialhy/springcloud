@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hy.springcloud.mapper.UserMapper">
+
+    <resultMap id="UserRM" type="com.hy.springcloud.entities.User">
+        <id property="id" column="user_id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="user_password"/>
+        <result property="name" column="user_name"/>
+        <result property="gender" column="user_gender"/>
+        <result property="telephone" column="user_telephone"/>
+        <result property="email" column="user_email"/>
+        <result property="remark" column="user_remark"/>
+        <result property="imagePath" column="user_image_path"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserRM">
+        SELECT
+          u.user_id,
+          u.user_name,
+          u.user_password,
+          u.login_name,
+          u.user_email,
+          u.user_gender,
+          u.user_image_path,
+          u.user_remark,
+          u.user_telephone,  
+        FROM oa_user u 
+    </select>
+    
+    <select id="getUserById" parameterMap="java.lang.Integer" resultMap="UserRM"></select>
+
+    <insert id="add" parameterType="com.hy.springcloud.entities.User" useGeneratedKeys="true">
+        /*返回刚才添加的主键*/
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT
+        INTO
+            oa_user(login_name, user_password, user_name, user_gender, user_telephone, user_email, user_remark,
+            user_image_path, department_id)
+        VALUES
+          (#{loginName},#{password},#{name},#{gender},#{telephone},#{email},#{remark},#{imagePath},#{department.id})
+    </insert>
+
+</mapper>

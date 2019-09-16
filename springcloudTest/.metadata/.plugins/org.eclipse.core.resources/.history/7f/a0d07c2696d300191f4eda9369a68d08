@@ -1,0 +1,8 @@
+package com.hy.cloudserver;
+
+@
+public class EurekaService {
+public static void main(String[] args) {
+	
+}
+}

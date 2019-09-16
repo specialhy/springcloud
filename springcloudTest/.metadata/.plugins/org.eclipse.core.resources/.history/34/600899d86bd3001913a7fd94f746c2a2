@@ -1,0 +1,14 @@
+package com.bjlemon.oa.service;
+
+import com.bjlemon.oa.domain.RolePrivilege;
+
+import java.util.List;
+
+public interface RolePrivilegeService {
+    List<RolePrivilege> findRolePrivilegeListByRoleId(Integer id);
+
+    void deleteRolePrivilege(RolePrivilege rolePrivilege);
+    void addRolePrivilege(RolePrivilege rolePrivilege);
+
+}
+

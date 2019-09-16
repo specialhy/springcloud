@@ -1,0 +1,12 @@
+package com.hy.springcloud;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Dep8001 {
+	
+	public static void main(String[] args) {
+		
+	}
+
+}

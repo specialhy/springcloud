@@ -1,0 +1,5 @@
+com\hy\cloud\controller\UserController.class
+com\hy\myrule\MySelfRule.class
+com\hy\myrule\RandomRule_hy.class
+com\hy\cloud\UserConsumer802.class
+com\hy\cloud\config\ConfigBean.class

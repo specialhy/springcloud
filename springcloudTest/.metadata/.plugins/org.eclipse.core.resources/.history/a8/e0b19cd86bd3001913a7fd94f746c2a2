@@ -1,0 +1,33 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.Privilege;
+import com.bjlemon.oa.mapper.PrivilegeMapper;
+import com.bjlemon.oa.service.PrivilegeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class PrivilegeServiceImpl implements PrivilegeService{
+    @Autowired
+    private PrivilegeMapper privilegeMapper;
+    @Override
+    public List<Privilege> findAllTopPrivilege() {
+        return privilegeMapper.findAllTop();
+    }
+
+    @Override
+    public List<Privilege> findPrivilegeChildrenListById(Integer id) {
+
+        return this.privilegeMapper.findChildrenListById(id);
+    }
+
+    @Override
+    public Privilege findPrivilegeById(Integer id) {
+        return this.privilegeMapper.findById(id);
+
+    }
+}

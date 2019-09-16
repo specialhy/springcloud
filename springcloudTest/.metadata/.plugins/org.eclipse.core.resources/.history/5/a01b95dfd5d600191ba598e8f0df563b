@@ -1,0 +1,5 @@
+package com.hy.springcloud.service;
+
+public class DeptClientServiceFallbackFactory {
+
+}

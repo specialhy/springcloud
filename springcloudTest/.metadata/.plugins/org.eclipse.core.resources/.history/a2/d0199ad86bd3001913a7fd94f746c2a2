@@ -1,0 +1,14 @@
+package com.bjlemon.oa.service;
+
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.domain.UserRole;
+
+import java.util.List;
+
+public interface UserRoleService {
+
+    void addUserRole(UserRole userRole);
+    List<UserRole> findUserRoleListByRoleId(Integer id);
+    void deleteUserRole(UserRole userRole);
+
+}

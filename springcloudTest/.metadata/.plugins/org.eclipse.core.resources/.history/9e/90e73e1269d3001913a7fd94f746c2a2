@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjlemon.oa.mapper.PrivilegeMapper">
+    <resultMap id="PrivilegeRM" type="com.bjlemon.oa.domain.Privilege">
+        <id property="id" column="privilege_id"/>
+        <result property="name" column="privilege_name"/>
+        <result property="url" column="privilege_url"/>
+        <result property="level" column="privilege_level"/>
+        <result property="isLeaf" column="privilege_is_left"/>
+        <result property="isModule" column="privilege_id_module"/>
+
+    </resultMap>
+<select id="findAllTop" resultMap="PrivilegeRM">
+    SELECT
+     privilege_id,
+     privilege_name,
+     privilege_url,
+     privilege_level,
+     privilege_is_leaf,
+     privilege_is_module
+     FROM oa_privilege
+    WHERE parent_id is NULL
+</select>
+    <select id="findChildrenListById" parameterType="int" resultMap="PrivilegeRM">
+SELECT
+     privilege_id,
+     privilege_name,
+     privilege_url,
+     privilege_level,
+     privilege_is_leaf,
+     privilege_is_module
+     FROM oa_privilege
+    WHERE parent_id = #{id}
+    </select>
+    <select id="findById" parameterType="int" resultMap="PrivilegeRM">
+        SELECT
+     privilege_id,
+     privilege_name,
+     privilege_url,
+     privilege_level,
+     privilege_is_leaf,
+     privilege_is_module
+     FROM oa_privilege
+    WHERE privilege_id = #{id}
+    </select>
+</mapper>

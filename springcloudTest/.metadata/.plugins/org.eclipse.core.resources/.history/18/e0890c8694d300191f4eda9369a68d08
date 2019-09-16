@@ -1,0 +1,5 @@
+package com.hy.cloud.controller;
+
+public class UserController {
+
+}

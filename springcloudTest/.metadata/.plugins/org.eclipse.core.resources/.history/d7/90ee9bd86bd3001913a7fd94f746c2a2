@@ -1,0 +1,39 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.Department;
+import com.bjlemon.oa.mapper.DepartmentMapper;
+import com.bjlemon.oa.service.DepartmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class DepartmentServiceImpl implements DepartmentService {
+
+    @Autowired
+    private DepartmentMapper departmentMapper;
+
+    @Override
+    public List<Department> findAllTopDepartmentList() {
+        return this.departmentMapper.findAllTop();
+    }
+
+    @Override
+    public List<Department> findAllDepartmentList() {
+        return this.departmentMapper.findAll();
+    }
+
+    @Override
+    public Department findDepartmentById(Integer id) {
+        return this.departmentMapper.findById(id);
+    }
+
+    @Override
+    public List<Department> findChildrenListById(Integer id) {
+        return this.departmentMapper.findChildrenListById(id);
+    }
+
+}

@@ -1,0 +1,36 @@
+package com.hy.springcloud.service.impl;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hy.springcloud.entities.User;
+import com.hy.springcloud.mapper.UserMapper;
+import com.hy.springcloud.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+@Service
+@Transactional
+public class UserServiceImpl implements UserService{
+
+    @Autowired
+    private UserMapper userMapper;
+
+	@Override
+	public List<User> findAllUserList() {
+		return userMapper.findAll();
+	}
+
+	@Override
+	public int addUser(User user) {
+		userMapper.add(user);
+	}
+
+
+
+   
+}

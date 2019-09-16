@@ -1,0 +1,7 @@
+package com.hy.springcloud.service.impl;
+
+import feign.hystrix.FallbackFactory;
+
+public class DeptClientServiceFallBackFactory implements FallbackFactory<Deprecated> {
+
+}

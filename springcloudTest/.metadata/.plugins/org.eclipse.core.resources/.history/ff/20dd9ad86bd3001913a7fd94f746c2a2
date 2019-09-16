@@ -1,0 +1,33 @@
+package com.bjlemon.oa.service.impl;
+
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.mapper.RolePrivilegeMapper;
+import com.bjlemon.oa.mapper.UserRoleMapper;
+import com.bjlemon.oa.service.RolePrivilegeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class RolePrivilegeServiceImpl implements RolePrivilegeService{
+@Autowired
+private RolePrivilegeMapper rolePrivilegeMapper;
+
+    @Override
+    public List<RolePrivilege> findRolePrivilegeListByRoleId(Integer id) {
+        return this.rolePrivilegeMapper.findByRoleId(id);
+    }
+
+    @Override
+    public void deleteRolePrivilege(RolePrivilege rolePrivilege) {
+this.rolePrivilegeMapper.delete(rolePrivilege);
+    }
+
+    @Override
+    public void addRolePrivilege(RolePrivilege rolePrivilege) {
+        this.rolePrivilegeMapper.add(rolePrivilege);
+    }
+}

@@ -1,0 +1,16 @@
+package com.bjlemon.oa.mapper;
+
+import com.bjlemon.oa.domain.Department;
+
+import java.util.List;
+
+public interface DepartmentMapper {
+
+    List<Department> findAllTop();
+
+    List<Department> findAll();
+
+    Department findById(Integer id);
+
+    List<Department> findChildrenListById(Integer id);
+}

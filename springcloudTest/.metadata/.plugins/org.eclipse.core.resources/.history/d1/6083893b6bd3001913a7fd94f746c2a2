@@ -1,0 +1,13 @@
+package com.bjlemon.oa.mapper;
+
+import com.bjlemon.oa.domain.Role;
+
+import java.util.List;
+
+public interface RoleMapper {
+
+    List<Role> findAll();
+
+    Role findById(Integer id);
+    void deleteById(Integer id);
+}

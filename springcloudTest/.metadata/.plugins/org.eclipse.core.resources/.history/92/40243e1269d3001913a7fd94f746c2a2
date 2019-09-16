@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjlemon.oa.mapper.UserRoleMapper">
+
+    <insert id="add" parameterType="com.bjlemon.oa.domain.UserRole">
+        INSERT INTO oa_user_role (user_role_id, user_id, role_id) VALUES (NULL ,#{user.id},#{role.id})
+    </insert>
+
+    <resultMap id="UserRoleRM" type="com.bjlemon.oa.domain.UserRole">
+        <id property="id" column="user_role_id"/>
+        <association property="user" column="user_id" javaType="com.bjlemon.oa.domain.User">
+            <id property="id" column="user_id"/>
+            <result property="loginName" column="login_name"/>
+            <result property="password" column="user_password"/>
+            <result property="name" column="user_name"/>
+            <result property="gender" column="user_gender"/>
+            <result property="telephone" column="user_telephone"/>
+            <result property="email" column="user_email"/>
+            <result property="remark" column="user_remark"/>
+            <result property="imagePath" column="user_image_path"/>
+        </association>
+        <association property="role" column="role_id" javaType="com.bjlemon.oa.domain.Role">
+            <id property="id" column="role_id"/>
+            <result property="name" column="role_name"/>
+            <result property="description" column="role_description"/>
+        </association>
+    </resultMap>
+
+    <select id="findByRoleId" parameterType="int" resultMap="UserRoleRM">
+        select
+          user_role_id,
+          user_id,
+          role_id
+        from oa_user_role
+        where role_id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="com.bjlemon.oa.domain.UserRole">
+      delete
+      from
+        oa_user_role
+      where
+        user_role_id = #{id}
+    </delete>
+
+
+</mapper>

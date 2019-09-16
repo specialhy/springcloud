@@ -1,0 +1,9 @@
+package com.hy.cloud;
+
+
+public class UserConsumer8002 {
+	  public static void main(String[] args) {
+	        SpringApplication.run(UserConsumer8002.class,args);
+	    }
+
+}

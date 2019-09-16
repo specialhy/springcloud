@@ -1,0 +1,74 @@
+package com.hy.springcloud.controller;
+
+import com.bjlemon.oa.annotation.PrivilegeAnnotation;
+import com.bjlemon.oa.domain.Privilege;
+import com.bjlemon.oa.domain.Role;
+import com.bjlemon.oa.domain.RolePrivilege;
+import com.bjlemon.oa.service.PrivilegeService;
+import com.bjlemon.oa.service.RolePrivilegeService;
+import com.bjlemon.oa.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("system")
+public class RoleController {
+@Autowired
+    private RoleService roleService;
+@Autowired
+   private RolePrivilegeService rolePrivilegeService;
+@Autowired
+private PrivilegeService privilegeService;
+   @PrivilegeAnnotation(action = "/system/role/list")
+    @RequestMapping("role/list")
+    public String list(Model model){
+        List<Role> roleList=this.roleService.findAllRoleList();
+        model.addAttribute("roleList",roleList);
+return "/system/role/list";
+    }
+   @PrivilegeAnnotation(action = "/system/role/delete")
+      @RequestMapping("/role/delete/{id}")
+    public String delete(@PathVariable("id") Integer id)
+      {
+          this.roleService.deleteById(id);
+        return "redirect:/system/role/list";
+      }
+      /*进入授权页面*/
+     @PrivilegeAnnotation(action = "/system/role/setPrivilegeUI")
+     @RequestMapping("/role/setPrivilegeUI/{id}")
+    public String setPrivilegeUI(@PathVariable("id") Integer id,Model model){
+        //查询出角色  给那个角色设置权限
+    Role role = this.roleService.findRoleById(id);
+    model.addAttribute("role",role);
+    //查询角色权限列表  这里就直接查询出这个与这个角色相关的权限信息
+        List<RolePrivilege> rolePrivilegeList=this.rolePrivilegeService.findRolePrivilegeListByRoleId(id);
+        model.addAttribute("rolePrivilegeList",rolePrivilegeList);
+        //下面是查出全部顶层权限
+         List<Privilege> topPrivilegeList=this.privilegeService.findAllTopPrivilege();
+         model.addAttribute("topPrivilegeList",topPrivilegeList);
+         return "/system/role/setPrivilegeUI";
+}
+/*授权*/
+  @PrivilegeAnnotation(action = "/system/role/setPrivilege")
+    @RequestMapping("/role/setPrivilege/{id}")
+    public String setPrivilegeUI(@PathVariable("id") Integer id,Integer[] privilegeIds){
+        //查询出角色  给那个角色设置权限
+        Role role = this.roleService.findRoleById(id);
+        //这里前段传的是String 这里要转换为Integer数组  可以不用
+ /*       Integer[] privilegeIdArray = new Integer[privilegeIds.length];
+        for(int i = 0; i < privilegeIds.length;i++){
+               privilegeIdArray[i] = Integer.parseInt(privilegeIds[i]);
+        }*/
+        //给那个角色设置什么样的权限
+       /*转换用的 this.roleService.setPrivilege(role, privilegeIdArray);*/
+
+        this.roleService.setPrivilege(role, privilegeIds);
+        return "redirect:/system/role/list";
+
+    }
+}

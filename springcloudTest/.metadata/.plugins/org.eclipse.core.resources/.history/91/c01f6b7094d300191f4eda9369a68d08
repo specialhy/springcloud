@@ -1,0 +1,13 @@
+package com.hy.cloud.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+public class ConfigBean {
+	
+	@Bean
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
+	}
+
+}

@@ -1,0 +1,15 @@
+package com.hy.myrule;
+
+import org.springframework.context.annotation.Configuration;
+
+import com.netflix.loadbalancer.IRule;
+
+@Configuration
+public class MySelfRule {
+	
+	public IRule myRule() {
+		
+	}
+	
+
+}

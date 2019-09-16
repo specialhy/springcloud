@@ -1,0 +1,44 @@
+package com.hy.cloud.controller;
+
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.hy.springcloud.entities.User;
+import com.hy.springcloud.service.DeptClientaservice;
+
+@RestController
+public class UserController {
+	
+		//private static final String REST_URL_PREFIX = "http:localhost:8001";
+		private static final String REST_URL_PREFIX = "http://MICROSERVICECLOUD-PROVIDER-DEPT";
+		
+		@Autowired
+		private DeptClientaservice deptClientaservice;
+		
+	    @GetMapping("/user/list")
+	    public List<User> getlist() {
+	      return deptClientaservice.getlist()
+	    }
+	    
+	    @PostMapping("/user/add")
+	    public int add(User user) {
+	      return deptClientaservice.add(user);
+	    }
+
+	    
+	    @GetMapping("/user/getUserById/{id}")
+	    public User getlist(@PathVariable("id") int id) {
+	      return deptClientaservice.getlist(id);
+	    }
+	
+
+}

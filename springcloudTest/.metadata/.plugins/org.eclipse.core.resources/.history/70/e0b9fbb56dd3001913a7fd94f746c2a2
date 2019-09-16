@@ -1,0 +1,16 @@
+package com.hy.springcloud.mapper;
+
+
+
+import java.util.List;
+
+import com.hy.springcloud.entities.User;
+
+public interface UserMapper {
+
+    public List<User> findAll();
+
+    int add(User user);
+
+
+}

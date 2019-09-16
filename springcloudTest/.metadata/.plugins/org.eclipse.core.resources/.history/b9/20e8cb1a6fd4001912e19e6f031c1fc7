@@ -1,0 +1,28 @@
+package com.hy.springcloud.service;
+
+import java.util.List;
+
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.hy.springcloud.entities.User;
+
+@FeignClient(value="MICROSERVICECLOUD-PROVIDER-DEPT")
+public interface DeptClientaservice {
+	
+	 @GetMapping("/user/list")
+	    public List<User> getlist() ;
+	    
+	    @PostMapping("/user/add")
+	    public int add(User user) {
+	      return userService.addUser(user);
+	    }
+
+	    
+	    @GetMapping("/user/getUserById/{id}")
+	    public User getlist(@PathVariable("id") int id) {
+	      return userService.getUserById(id);
+	    }
+}
